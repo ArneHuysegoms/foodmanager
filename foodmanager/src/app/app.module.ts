@@ -11,6 +11,11 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { ReactiveFormsModule } from '@angular/forms';
 
 
+import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { AngularFireModule } from 'angularfire2';
+import { environment } from '../environments/environment';
+
+
 const routes: Routes = [
 
   { path: 'home', component: HomeComponent },
@@ -26,10 +31,12 @@ const routes: Routes = [
     ContentsComponent,
     FooterComponent,
     HomeComponent,
-    NotFoundComponent
+    NotFoundComponent,
   ],
   imports: [
     BrowserModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule,
     RouterModule.forRoot(routes),
     ReactiveFormsModule
   ],

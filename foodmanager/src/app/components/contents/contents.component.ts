@@ -1,7 +1,12 @@
+
+import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Component, OnInit } from '@angular/core';
 import { Product } from 'src/app/domain/product';
-import { ProductserviceService } from 'src/app/services/productservice.service';
+import { ProductService } from 'src/app/services/product.service';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { UUID } from 'angular2-uuid';
+import { UuidService } from 'src/app/services/uuid.service';
 
 @Component({
   selector: 'app-contents',
@@ -16,35 +21,40 @@ export class ContentsComponent implements OnInit {
   typeOptions : string[];
   storagePlaceOptions : string[];
 
+  products$ : Observable<any[]>;
 
-  constructor(private productService : ProductserviceService,
-    private fb : FormBuilder) { }
+
+  constructor(
+    private productService : ProductService,
+    private uuidService : UuidService,
+    private fb : FormBuilder
+    )
+    {}
 
   ngOnInit(): void {
-    this._products = this.productService.getProducts();
-    this.typeOptions = ["Kip", "Vlees", "Groenten", "Koolhydraten", "Zuivel", "Drank"];
-    this.storagePlaceOptions = ['Diepvries', 'Koelkast', 'Berging'];
+    this.products$ = this.productService.getProducts$();
+    this.typeOptions = ["Kip", "Vlees", "Groenten", "Koolhydraten", "Zuivel", "Drank", "Ander"];
+    this.storagePlaceOptions = ['Diepvries', 'Koelkast', 'Berging', 'Groenten- en fruitrekje'];
     this.form = this.fb.group({
       productName : new FormControl('', Validators.required),
       productType: new FormControl('', Validators.required),
       productExpiryDate: new FormControl('', [Validators.required,
-        Validators.pattern('[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}')]),
+         Validators.pattern('[0-9]{1,2}/[0-9]{1,2}/[0-9]{4}')]
+        ),
       productStoragePlace: new FormControl('', Validators.required)
     })
-    console.log(this.typeOptions);
   }
 
   handleEdit() : void {
     this.editMode = !this.editMode;
-    console.log('editmode',this.editMode);
   }
 
   handleDelete(id : string) : void {
     this.productService.deleteProduct(id);
   }
 
-  handleAdd(product : any) : void {
-    this.productService.addProduct(product);
+  handleAdd(productForm : any) : void {
+    this.productService.addProduct(productForm, this.uuidService.generateUUID());
   }
 
   daysUntilExpirationColor(expiryDate : string) {
