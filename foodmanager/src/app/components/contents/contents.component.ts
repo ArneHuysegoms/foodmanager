@@ -1,12 +1,12 @@
 
-import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Component, OnInit } from '@angular/core';
 import { Product } from 'src/app/domain/product';
 import { ProductService } from 'src/app/services/product.service';
+import { UuidService } from 'src/app/services/uuid.service';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { UUID } from 'angular2-uuid';
-import { UuidService } from 'src/app/services/uuid.service';
 
 @Component({
   selector: 'app-contents',

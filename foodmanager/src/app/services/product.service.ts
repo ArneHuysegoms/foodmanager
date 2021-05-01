@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Product } from '../domain/product';
 import { NullVisitor } from '@angular/compiler/src/render3/r3_ast';
-import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
 
