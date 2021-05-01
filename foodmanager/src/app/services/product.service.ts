@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Product } from '../domain/product';
-import { NullVisitor } from '@angular/compiler/src/render3/r3_ast';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-
-
 
 @Injectable({
   providedIn: 'root',
@@ -23,6 +20,10 @@ export class ProductService {
     this.products$ = this.productCollection.valueChanges();
   }
 
+  refresh(){
+    this.today = new Date();
+  }
+
   getProducts$() : Observable<any[]> {
     return this.products$;
   }
@@ -32,13 +33,11 @@ export class ProductService {
   };
 
   addProduct(productForm : any, uuid : string){
-
-    const [day, month, year] = productForm.productExpiryDate.split('/');
     this.productCollection.doc(uuid).set({
       id: uuid,
       name: productForm.productName,
       type: productForm.productType,
-      expiryDate: new Date(month+'/'+day+'/'+year),
+      expiryDate: this.handleInputDate(productForm.productExpiryDate),
       storagePlace: productForm.productStoragePlace
     });
   };
@@ -56,6 +55,19 @@ export class ProductService {
       return {'bg-warning':true};
     }
     return {'bg-success':true};
+  }
+
+  handleInputDate(dateString : string){
+    let result = new Date();
+    if(dateString.split('/').length === 3){
+      const [day, month, year] = dateString.split('/');
+      return new Date(month+'/'+day+'/'+year);
+    }
+    else if (dateString[0] === '+'){
+      result.setDate(result.getDate() + parseInt(dateString.slice(1,dateString.length)));
+      return result;
+    }
+
   }
 
 }

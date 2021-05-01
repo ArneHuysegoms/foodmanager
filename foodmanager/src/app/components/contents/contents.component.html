@@ -37,7 +37,7 @@
       <tr *ngFor='let product of products$ | async'>
         <td scope="row">{{product.name}}</td>
         <td>{{product.type}}</td>
-        <td [ngClass]="daysUntilExpirationColor(product.expiryDate)">{{product.expiryDate.seconds * 1000 | date:'dd/MM/YYYY'}}</td>
+        <td [ngClass]="daysUntilExpirationColor(product.expiryDate.seconds * 1000)">{{product.expiryDate.seconds * 1000 | date:'dd/MM/YYYY'}}</td>
         <td>{{product.storagePlace}}</td>
         <td><button type="button" class="btn btn-danger btn-sm" (click)="handleDelete(product.id)">Delete</button></td>
       </tr>

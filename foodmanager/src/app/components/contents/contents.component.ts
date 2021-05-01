@@ -6,7 +6,6 @@ import { ProductService } from 'src/app/services/product.service';
 import { UuidService } from 'src/app/services/uuid.service';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { UUID } from 'angular2-uuid';
 
 @Component({
   selector: 'app-contents',
@@ -32,6 +31,7 @@ export class ContentsComponent implements OnInit {
     {}
 
   ngOnInit(): void {
+    this.productService.refresh();
     this.products$ = this.productService.getProducts$();
     this.typeOptions = ["Kip", "Vlees", "Groenten", "Koolhydraten", "Zuivel", "Drank", "Ander"];
     this.storagePlaceOptions = ['Diepvries', 'Koelkast', 'Berging', 'Groenten- en fruitrekje'];
@@ -39,7 +39,7 @@ export class ContentsComponent implements OnInit {
       productName : new FormControl('', Validators.required),
       productType: new FormControl('', Validators.required),
       productExpiryDate: new FormControl('', [Validators.required,
-         Validators.pattern('[0-9]{1,2}/[0-9]{1,2}/[0-9]{4}')]
+         Validators.pattern('[0-9]{1,2}/[0-9]{1,2}/[0-9]{4}|([+][0-9]+)')]
         ),
       productStoragePlace: new FormControl('', Validators.required)
     })
@@ -58,7 +58,7 @@ export class ContentsComponent implements OnInit {
   }
 
   daysUntilExpirationColor(expiryDate : string) {
-    const amountOfDays = this.productService.calculateDaysUntilExpiration(expiryDate)
+    const amountOfDays = this.productService.calculateDaysUntilExpiration(expiryDate);
     return this.productService.giveExpirationColor(amountOfDays);
   }
 
