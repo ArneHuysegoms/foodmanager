@@ -1,13 +1,44 @@
+<div *ngIf="productsSorted$">
+  <div *ngFor='let product of productsSorted$ | async'>
+    <p></p>
+  </div>
+</div>
+
 <div class="container-fluid mt-5">
   <button type="button" class="btn btn-primary" (click)="handleEdit()">Edit <i class="fa fa-cog" aria-hidden="true"></i></button>
   <table class="table table-striped">
     <thead>
       <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Expiry date</th>
-        <th>Storage place</th>
-        <th>Action</th>
+        <th>
+          <div class="row">
+            <div class="row-9 ml-3 mt-1" style="height: 27px">Name</div>
+            <div class="row-3 ml-3"><app-sorting-button (up)="sortAscending('name')" (down)="sortDescending('name')" (reset)="resetSort()"></app-sorting-button></div>
+          </div>
+        </th>
+        <th>
+          <div class="row">
+            <div class="row-9 ml-3 mt-1" style="height: 27px">Type</div>
+            <div class="row-3 ml-3"><app-sorting-button (up)="sortAscending('type')" (down)="sortDescending('type')" (reset)="resetSort()"></app-sorting-button></div>
+          </div>
+        </th>
+        <th>
+          <div class="row">
+            <div class="row-9 ml-3 mt-1" style="height: 27px">Expiry date</div>
+            <div class="row-3 ml-3"><app-sorting-button (up)="sortAscending('expiryDate')" (down)="sortDescending('expiryDate')" (reset)="resetSort()"></app-sorting-button></div>
+          </div>
+        </th>
+        <th>
+          <div class="row">
+            <div class="row-9 ml-3 mt-1" style="height: 27px">Storage place</div>
+            <div class="row-3 ml-3"><app-sorting-button (up)="sortAscending('storagePlace')" (down)="sortDescending('storagePlace')" (reset)="resetSort()"></app-sorting-button></div>
+          </div>
+        </th>
+        <th>
+          <div class="row">
+            <div class="row-9 ml-3 mt-1" style="height: 27px">Action</div>
+            <div class="row-3 ml-3"></div>
+          </div>
+        </th>
       </tr>
     </thead>
     <tbody *ngIf="editMode">

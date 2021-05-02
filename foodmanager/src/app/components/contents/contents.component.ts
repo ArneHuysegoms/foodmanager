@@ -19,9 +19,8 @@ export class ContentsComponent implements OnInit {
   form : FormGroup;
   typeOptions : string[];
   storagePlaceOptions : string[];
-
   products$ : Observable<any[]>;
-
+  productsSorted$ : Observable<any[]>;
 
   constructor(
     private productService : ProductService,
@@ -33,6 +32,7 @@ export class ContentsComponent implements OnInit {
   ngOnInit(): void {
     this.productService.refresh();
     this.products$ = this.productService.getProducts$();
+    this.productsSorted$ = this.productService.getProductsSorted$();
     this.typeOptions = ["Kip", "Vlees", "Groenten", "Koolhydraten", "Zuivel", "Drank", "Ander"];
     this.storagePlaceOptions = ['Diepvries', 'Koelkast', 'Berging', 'Groenten- en fruitrekje'];
     this.form = this.fb.group({
@@ -60,6 +60,19 @@ export class ContentsComponent implements OnInit {
   daysUntilExpirationColor(expiryDate : string) {
     const amountOfDays = this.productService.calculateDaysUntilExpiration(expiryDate);
     return this.productService.giveExpirationColor(amountOfDays);
+  }
+
+  sortAscending(field : string){
+    this.products$ = this.productService.sortAscending(field);
+  }
+
+  sortDescending(field : string){
+    this.products$ = this.productService.sortDescending(field);
+  }
+
+  resetSort(){
+    this.products$ = this.productService.resetSort();
+
   }
 
 }

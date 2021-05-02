@@ -12,9 +12,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 
 import { AngularFirestoreModule } from '@angular/fire/firestore';
-// import { AngularFireModule } from 'angularfire2';
 import { AngularFireModule } from '@angular/fire';
 import { environment } from '../environments/environment';
+import { SortingButtonComponent } from './components/contents/sorting-button/sorting-button.component';
 
 
 const routes: Routes = [
@@ -33,6 +33,7 @@ const routes: Routes = [
     FooterComponent,
     HomeComponent,
     NotFoundComponent,
+    SortingButtonComponent,
   ],
   imports: [
     BrowserModule,

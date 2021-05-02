@@ -1,17 +1,18 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Query } from '@angular/core';
 import { Product } from '../domain/product';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductService {
-  products: Product[];
   today : Date;
-
   productCollection: AngularFirestoreCollection<any>;
   products$ : Observable<any[]>;
+  productsSorted$ : Observable<any[]>;
+  currentlyAscSortedOn : string;
+  currentlyDescSortedOn : string;
 
   constructor(
     private db : AngularFirestore) {
@@ -26,6 +27,9 @@ export class ProductService {
 
   getProducts$() : Observable<any[]> {
     return this.products$;
+  }
+  getProductsSorted$() : Observable<any[]> {
+    return this.productsSorted$;
   }
 
   deleteProduct(id : string){
@@ -67,7 +71,29 @@ export class ProductService {
       result.setDate(result.getDate() + parseInt(dateString.slice(1,dateString.length)));
       return result;
     }
-
   }
+
+  sortAscending(field : string){
+    this.productCollection = this.db.collection('/products', ref => ref.orderBy(field));
+    this.products$ = this.productCollection.valueChanges();
+    this.currentlyAscSortedOn = field;
+    return this.products$;
+  }
+
+  sortDescending(field : string){
+    this.productCollection = this.db.collection('/products', ref => ref.orderBy(field, "desc"));
+    this.products$ = this.productCollection.valueChanges();
+    this.currentlyDescSortedOn = field;
+    return this.products$;
+  }
+
+  resetSort(){
+    this.productCollection = this.db.collection('/products');
+    this.products$ = this.productCollection.valueChanges();
+    this.currentlyAscSortedOn = undefined;
+    this.currentlyDescSortedOn = undefined;
+    return this.products$;
+  }
+
 
 }
