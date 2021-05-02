@@ -1,6 +1,6 @@
-<div class="row mx-auto" (click)="upEmit()" [hidden]="!upVisible">
-  <i class="fa fa-angle-up"></i>
+<div (click)="upEmit()" [hidden]="!upVisible" [ngClass]="upClass">
+  <i class="fa fa-angle-up"  ></i>
 </div>
-<div class="row mx-auto" (click)="downEmit()" [hidden]="!downVisible">
+<div (click)="downEmit()" [hidden]="!downVisible" [ngClass]="downClass">
   <i class="fa fa-angle-down"></i>
 </div>

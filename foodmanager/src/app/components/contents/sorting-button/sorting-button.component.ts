@@ -14,7 +14,14 @@ export class SortingButtonComponent implements OnInit {
   upVisible: boolean = true;
   downVisible: boolean = true;
 
-  constructor() { }
+  upClass : any = "row mx-auto";
+  downClass : any = "row mx-auto";
+  downClassInactive : any = "row mx-auto";
+  downClassActive : any = "row mx-auto mt-3";
+
+  constructor() {
+
+  }
 
   ngOnInit(): void {
   }
@@ -25,7 +32,7 @@ export class SortingButtonComponent implements OnInit {
       this.reset.emit();
     }
     else {
-      this.upVisible = !this.upVisible;
+      this.downVisible = !this.downVisible;
       this.up.emit();
     }
   }
@@ -33,10 +40,12 @@ export class SortingButtonComponent implements OnInit {
   downEmit(){
     if(!this.upVisible){
       this.upVisible = !this.upVisible;
+      this.downClass = this.downClassInactive;
       this.reset.emit();
     }
     else{
-      this.downVisible = !this.downVisible;
+      this.upVisible = !this.upVisible;
+      this.downClass = this.downClassActive;
       this.down.emit();
     }
   }
