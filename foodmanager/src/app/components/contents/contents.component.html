@@ -1,11 +1,8 @@
-<div *ngIf="productsSorted$">
-  <div *ngFor='let product of productsSorted$ | async'>
-    <p></p>
-  </div>
-</div>
-
 <div class="container-fluid mt-5">
-  <button type="button" class="btn btn-primary" (click)="handleEdit()">Edit <i class="fa fa-cog" aria-hidden="true"></i></button>
+  <div>
+    <div class="float-left">Today's date: {{this.today | date:'dd/MM/YYYY'}}</div>
+    <button type="button" class="btn btn-primary float-right" (click)="handleEdit()">Edit <i class="fa fa-cog" aria-hidden="true"></i></button>
+  </div>
   <table class="table table-striped">
     <thead>
       <tr>

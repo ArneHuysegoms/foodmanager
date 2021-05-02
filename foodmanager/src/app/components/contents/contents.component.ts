@@ -5,7 +5,7 @@ import { Product } from 'src/app/domain/product';
 import { ProductService } from 'src/app/services/product.service';
 import { UuidService } from 'src/app/services/uuid.service';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable, Subject, BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-contents',
@@ -20,7 +20,8 @@ export class ContentsComponent implements OnInit {
   typeOptions : string[];
   storagePlaceOptions : string[];
   products$ : Observable<any[]>;
-  productsSorted$ : Observable<any[]>;
+  refresh$ : BehaviorSubject<any> = new BehaviorSubject(1);
+  today : Date;
 
   constructor(
     private productService : ProductService,
@@ -30,10 +31,13 @@ export class ContentsComponent implements OnInit {
     {}
 
   ngOnInit(): void {
-    this.productService.refresh();
+    this.refresh$.subscribe( () => {
+      this.productService.refresh();
+      this.today = this.productService.getToday();
+    });
+    this.refresh$.next(true);
     this.products$ = this.productService.getProducts$();
-    this.productsSorted$ = this.productService.getProductsSorted$();
-    this.typeOptions = ["Kip", "Vlees", "Groenten", "Koolhydraten", "Zuivel", "Drank", "Ander"];
+    this.typeOptions = ["Kip", "Vlees", "Groenten", "Fruit", "Koolhydraten", "Zuivel", "Drank", "Ander"];
     this.storagePlaceOptions = ['Diepvries', 'Koelkast', 'Berging', 'Groenten- en fruitrekje'];
     this.form = this.fb.group({
       productName : new FormControl('', Validators.required),
@@ -72,7 +76,6 @@ export class ContentsComponent implements OnInit {
 
   resetSort(){
     this.products$ = this.productService.resetSort();
-
   }
 
 }

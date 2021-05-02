@@ -25,6 +25,10 @@ export class ProductService {
     this.today = new Date();
   }
 
+  getToday(){
+    return this.today;
+  }
+
   getProducts$() : Observable<any[]> {
     return this.products$;
   }
